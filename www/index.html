@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИНФОПРОДЖЕКТ - IT-решения для бизнеса</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 150px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #2c3e50;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #3498db;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid #3498db;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        /* Metrics */
+        .metrics {
+            background: #f8f9fa;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 3rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .tech-item {
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .tech-item:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .tech-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">ИНФО<span>ПРОДЖЕКТ</span></div>
+                <div class="nav-links">
+                    <a href="#about">О компании</a>
+                    <a href="#services">Услуги</a>
+                    <a href="#metrics">Результаты</a>
+                    <a href="#tech">Технологии</a>
+                    <a href="#contact">Контакты</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>IT-решения для цифровой трансформации</h1>
+            <p class="hero-subtitle">Разрабатываем программное обеспечение, внедряем инновационные технологии и создаем цифровые продукты, которые помогают бизнесу расти в эпоху цифровизации</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">О компании</h2>
+            <div class="about-content">
+                <div>
+                    <p><strong>ИНФОПРОДЖЕКТ</strong> — ведущая IT-компания, специализирующаяся на разработке программного обеспечения, анализе данных и создании цифровых решений для бизнеса. Мы помогаем компаниям адаптироваться к цифровой экономике и использовать технологии для достижения стратегических целей.</p>
+                    <br>
+                    <p>Наша миссия — превращать сложные технологические задачи в простые и эффективные решения, которые приносят реальную пользу нашим клиентам.</p>
+                    <br>
+                    <p>Мы сочетаем глубокую экспертизу в области разработки ПО, аналитики данных и облачных технологий с пониманием бизнес-процессов.</p>
+                </div>
+                <div>
+                    <div class="service-card">
+                        <div class="service-icon">🚀</div>
+                        <h3>Наш подход</h3>
+                        <p>Используем Agile-методологии, чтобы обеспечить быструю адаптацию к изменениям требований и гарантировать качество на каждом этапе разработки.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" style="background: #f8f9fa;">
+        <div class="container">
+            <h2 class="section-title">Наши IT-услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Разработка ПО</h3>
+                    <p>Создание веб- и мобильных приложений, корпоративных систем, микросервисных архитектур и API-интеграций.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Аналитика данных</h3>
+                    <p>Внедрение BI-систем, машинное обучение, прогнозная аналитика и визуализация данных для принятия решений.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">☁️</div>
+                    <h3>Облачные решения</h3>
+                    <p>Миграция в облако, DevOps, контейнеризация, облачная инфраструктура и автоматизация процессов.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔄</div>
+                    <h3>Digital-трансформация</h3>
+                    <p>Консультации по цифровизации бизнеса, оптимизация процессов и внедрение инновационных технологий.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics Section -->
+    <section id="metrics" class="metrics">
+        <div class="container">
+            <h2 class="section-title">Наши достижения</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">8+</div>
+                    <p>Лет на IT-рынке</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">120+</div>
+                    <p>Успешных проектов</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">40+</div>
+                    <p>Профессионалов в команде</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">95%</div>
+                    <p>Довольных клиентов</p>
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Рост компании и удовлетворенность клиентов</h3>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #3498db;"></div>
+                            <span>Количество проектов</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #2ecc71;"></div>
+                            <span>Удовлетворенность клиентов (%)</span>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="tech-stack">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Технологический стек</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">⚛️</div>
+                    <h3>Frontend</h3>
+                    <p>React, Vue.js, Angular, TypeScript</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⚙️</div>
+                    <h3>Backend</h3>
+                    <p>Node.js, Python, Java, .NET, Go</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🗄️</div>
+                    <h3>Базы данных</h3>
+                    <p>PostgreSQL, MongoDB, Redis, Elasticsearch</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">☁️</div>
+                    <h3>Облака</h3>
+                    <p>AWS, Azure, Google Cloud, Kubernetes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ИНФОПРОДЖЕКТ</h3>
+                    <p>IT-решения для цифрового будущего вашего бизнеса. Инновации, качество и надежность.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>📧 info@infoproject.ru</li>
+                        <li>📞 +7 (495) 123-45-67</li>
+                        <li>📍 Москва, ул. Технологическая, 15</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Режим работы</h3>
+                    <p>Пн-Пт: 9:00 - 18:00</p>
+                    <p>Сб-Вс: выходной</p>
+                </div>
+            </div>
+            <p>&copy; 2025 ООО "ИНФОПРОДЖЕКТ". Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Инициализация графика
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            
+            const growthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    datasets: [
+                        {
+                            label: 'Количество проектов',
+                            data: [15, 28, 45, 78, 120],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Удовлетворенность клиентов (%)',
+                            data: [88, 90, 92, 94, 95],
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#2c3e50',
+                            bodyColor: '#2c3e50',
+                            borderColor: '#3498db',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.datasetIndex === 0) {
+                                        label += context.parsed.y + ' проектов';
+                                    } else {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                color: '#7f8c8d'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Количество проектов',
+                                color: '#3498db'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                color: '#7f8c8d'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Удовлетворенность (%)',
+                                color: '#2ecc71'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            ticks: {
+                                color: '#7f8c8d'
+                            },
+                            min: 80,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

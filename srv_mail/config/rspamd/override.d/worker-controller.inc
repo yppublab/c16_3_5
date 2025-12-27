@@ -1,0 +1,2 @@
+password = "$2$dop9bt46tcmkyxqotdzg7cwyqcsqo56f$zmntfx4zc17bzbxbwu87f9s1pmyrpar5tk7ejrqjknwpwhidiegy"
+enable_password = "$2$dop9bt46tcmkyxqotdzg7cwyqcsqo56f$zmntfx4zc17bzbxbwu87f9s1pmyrpar5tk7ejrqjknwpwhidiegy"
