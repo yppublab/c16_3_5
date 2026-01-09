@@ -1,6 +1,8 @@
-FROM alpine:3.20
+FROM ubuntu:22.04
 
-RUN apk add --no-cache bash nginx openssh iproute2 sudo openssl shadow nano vim openrc
+ENV DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
+
+RUN apt-get update && apt-get install -y --no-install-recommends bash nginx iproute2 sudo nano vim curl wget openssh-server
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

@@ -1,0 +1,15 @@
+$ORIGIN infoproject.local.
+$TTL 300
+@   IN SOA ns.infoproject.local. admin.infoproject.local. (
+        2025091001 ; Serial
+        3600       ; Refresh
+        900        ; Retry
+        604800     ; Expire
+        300 )      ; Minimum
+
+; NS
+@         IN NS ns.infoproject.local.
+
+; APEX and hosts
+@         IN A 192.168.1.10
+ns        IN A 192.168.1.254

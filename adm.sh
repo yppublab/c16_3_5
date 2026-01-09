@@ -1,6 +1,11 @@
 #!/bin/bash
+echo 'running adm.sh'
 
-# Скрипт выполняет первичную конфиуграцию SSHD и создает пользователя для администрирования
+#Задаём пароль root
+#echo "root:${ROOT_PWD}"
+echo "root:${ROOT_PWD}" | chpasswd
+
+# Далее скрипт выполняет первичную конфиуграцию SSHD и создает пользователя для администрирования
 set -euo pipefail
 
 # SSH setup (avoid noisy errors if config dir missing)
@@ -22,13 +27,17 @@ sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/ssh
 sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config || true
 ssh-keygen -A >/dev/null 2>&1 || true
 
+echo 'adding adm user'
 # Add adm user
-if ! id -u radmin >/dev/null 2>&1; then
-	useradd -m -s /bin/bash -p "${ADM_HASH}" radmin || true
+if ! id -u student >/dev/null 2>&1; then
+	groupadd admins
+	useradd -m -s /bin/bash -p "${ADM_HASH}" student || true
+	usermod -a -G admins student
 fi
+#echo "${ADM_HASH}"
 
-echo 'radmin ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/91-radmin
-chmod 0440 /etc/sudoers.d/91-radmin
+echo 'student ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/91-student
+chmod 0440 /etc/sudoers.d/91-student
 
 mkdir -p /run/sshd
 chmod 755 /run/sshd
