@@ -6,7 +6,9 @@ ip route del default 2>/dev/null || true
 ip route add default via "${GATEWAY_IP}" || true
 
 # User for Nginx
-useradd -r -s /sbin/nologin nginx
+if ! id -u nginx >/dev/null 2>&1; then
+	useradd -r -s /sbin/nologin nginx || true
+fi
 
 # Minimal nginx site
 rm -f /etc/nginx/http.d/default.conf 2>/dev/null || true
