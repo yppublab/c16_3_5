@@ -22,10 +22,10 @@ RUN dnf -y update && \
         openssh-server \
         policycoreutils-python-utils \
         selinux-policy-targeted \
+	cronie \
         && \
     dnf clean all
 RUN wget -P /tmp/ https://products.s.kaspersky-labs.com/endpoints/keslinux10/12.3.0.1162/multilanguage-12.3.0.1162/3939393231387c44454c7c31/kesl-12.3.0-1162.x86_64.rpm
-
 
 # Создаем группу admins (для su)
 # RUN groupadd admins
